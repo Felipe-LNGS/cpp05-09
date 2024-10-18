@@ -53,8 +53,8 @@ std::ostream &operator<<(std::ostream &os,Form &e){
     return os << NAVY + "Form " << e.getName() << " created, grade required for sign " << e.getGradeSigned() << " and grade required for exec " << e.getGradeExec() << RESET;
 }
 std::ostream &operator<<(std::ostream &os,Form::GradeTooHighException &e){
-    return os << e;
+    return os << e.what();
 }
 std::ostream &operator<<(std::ostream &os,Form::GradeTooLowException &e){
-    return os << e;
+    return os << e.what();
 }

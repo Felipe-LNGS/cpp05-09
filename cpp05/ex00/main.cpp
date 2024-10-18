@@ -6,6 +6,9 @@ int main() {
         Bureaucrat eugene("Eugene", 1);
         std::cout << eugene << std::endl;
         eugene.decrementGrade();
+        eugene.decrementGrade();
+        std::cout << eugene << std::endl;
+		 eugene.incrementGrade();
         std::cout << eugene << std::endl<< std::endl;
     }
     catch (std::exception & e)

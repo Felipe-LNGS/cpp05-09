@@ -1,11 +1,10 @@
-NAME		=   Form
+NAME		=   AForm
 
 CC			=   c++
 
 FLAG		=   -std=c++98 -Wall -Wextra -Werror -g3
 
-C_FILES		=   main.cpp Bureaucrat.cpp Form.cpp
-
+C_FILES		=   main.cpp Bureaucrat.cpp AForm.cpp ShrubberyCreationForm.cpp RobotomyRequestForm.cpp PresidentialPardonForm.cpp
 OBJ_DIR		=   obj
 
 OBJS		=   $(addprefix $(OBJ_DIR)/, $(C_FILES:.cpp=.o))
