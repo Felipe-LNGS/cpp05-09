@@ -1,5 +1,19 @@
 #include "ScalarConverter.hpp"
 
+ScalarConverter::ScalarConverter(){}
+
+ScalarConverter::ScalarConverter(const ScalarConverter &src){
+	(void)src;
+}
+
+ScalarConverter &ScalarConverter::operator=(const ScalarConverter &src){
+	(void)src;
+	return *this;
+}
+
+ScalarConverter::~ScalarConverter(){}
+
+
 static bool isSpecialValue(const std::string &inputValue){
     return (inputValue == "+inf" || inputValue == "-inf" || inputValue == "nan" ||
             inputValue == "+inff" || inputValue == "-inff" || inputValue == "nanf");
