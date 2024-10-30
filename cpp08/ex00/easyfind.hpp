@@ -7,6 +7,12 @@
 
 class NotFind : public std::exception{
     public:
+        NotFind(){}
+        NotFind(NotFind const &src){(void)src;}
+        NotFind &operator=(NotFind const &src){
+            (void)src;
+            return *this;}
+        ~NotFind(){}
         const char *what() const throw(){
             return("Error: No occurrences found");
         }

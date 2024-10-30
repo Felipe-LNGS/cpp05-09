@@ -1,7 +1,5 @@
 #include "Span.hpp"
 
-		unsigned int _nbMax;
-		std::vector<int> vec;
 		Span::Span( unsigned int const &n):_nbMax(n){}
 		
 		Span::Span(Span const &src){
@@ -9,7 +7,7 @@
 			{
 				_nbMax = src._nbMax;
 				_vec.resize(src._vec.size());
-				for(unsigned int i = 0; i < _nbMax; i++)
+				for(unsigned int i = 0; i < _vec.size(); i++)
 					_vec[i] = src._vec[i];
 			}
 		}
@@ -19,7 +17,7 @@
 			{
 				_nbMax = cpy._nbMax;
 				_vec.resize(cpy._vec.size());
-				for(unsigned int i = 0; i < _nbMax; i++)
+				for(unsigned int i = 0; i < _vec.size(); i++)
 					_vec[i] = cpy._vec[i];
 			}
 			return *this;
@@ -55,7 +53,7 @@
 			return bigger - lower;
 		} 
 
-		void Span::addNumber(int &nb){
+		void Span::addNumber(int nb){
 				if(_vec.size() == _nbMax)
 					throw VecFull();
 				else
@@ -77,9 +75,9 @@
 		
 		std::vector<int> numbers;
 		for (int i = 0; i < size; i++) {
-			int random = rand() % 30000;
+			int random = rand() % 20000;
 			numbers.push_back(random);
-			std::cout << random << " ";
+			// std::cout << random << " ";
    			 }
 		return numbers;
 		}
