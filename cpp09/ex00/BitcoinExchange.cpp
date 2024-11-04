@@ -107,7 +107,7 @@
 				}
 				if(it->first > date){
 					_amount = it2->second * value;
-					std::cout << it2->first << " => " << value << " = " << _amount<< std::endl;
+					std::cout << it2->first << " => " << value << " = " << _amount << std::endl;
 					break ;
 				}
 				it2 = it;

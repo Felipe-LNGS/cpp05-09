@@ -1,4 +1,4 @@
-NAME		=   stack
+NAME		=   RPN
 
 CC			=   c++
 
