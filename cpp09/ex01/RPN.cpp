@@ -5,89 +5,119 @@
 
 #include "RPN.hpp"
 
-	std::stack<int> _array;
-	std::stack<int> _arrayTmp;
+ReversePolish::ReversePolish(): _array(), _countNumber(0), _countSign(0){}
+
+ReversePolish::ReversePolish(const ReversePolish &src){
+	if(this != &src){
+		_array = src._array;
+		_countNumber = src._countNumber;
+		_countSign = src._countSign;
+	}
+}
+
+ReversePolish &ReversePolish::operator =(const ReversePolish &cpy){
+	if(this != &cpy){
+		_array = cpy._array;
+		_countNumber = cpy._countNumber;
+		_countSign = cpy._countSign;
+	}
+	return *this;
+}
+
+ReversePolish::~ReversePolish(){}
+
+int ReversePolish::makeCalcul(int nb1, int nb2, char who){
 	
-	// ReversePolish::ReversePolish(): _array(), _arrayTmp(), _index(0){}
-	
-	// ReversePolish::ReversePolish(const ReversePolish &src){
-	// 	if(this != &src){
-	// 		for(int i = 0; src._array; ++i){
-	// 			this->_array = src._array;
-	// 		}
-	// 		for(int i = 0; src._arrayTmp; ++i){
-	// 			this->_array = src._arrayTmp;
-	// 		}	
-	// 	}
-	// }
-	// ReversePolish &ReversePolish::operator =(const ReversePolish &cpy){
-	// 	if(this != &cpy){
-	// 		for(int i = 0; cpy._array[i]; ++i){
-	// 			this->_array[i] = cpy._array[i];
-	// 		}
-	// 		for(int i = 0; cpy._arrayTmp[i]; ++i){
-	// 			this->_array[i] = cpy._arrayTmp[i];
-	// 		}	
-	// 	}
-	// 	return *this;
-	// }
-	ReversePolish::~ReversePolish(){}
-	int makeCalcul(int nb1, int nb2, char who){
-		
-		int result = 0;
-		
-		switch(who){
-			case '+':
-				result = nb2 + nb1; 
-			case  '-':
-				result = nb2 - nb1;
-			case '*' :
-				result = nb2 * nb1;
-			case '/' :
-				{if (nb1 == 0|| nb2 == 0){
-					std::cerr << "Division par 0 impossible \n";
-					throw();}
-				else
-					result = nb2 / nb1;
+	int result = 0;
+	switch(who){
+		case '+':
+			result = nb2 + nb1;
+			if ((nb2 > 0 && nb1 > 0 && result < 0) || (nb2 < 0 && nb1 < 0 && result > 0))
+				throw std::overflow_error("Overflow: result too large in addition");
+		break;
+		case  '-':
+			result = nb2 - nb1;
+			if ((nb2 < 0 && nb1 > 0 && result > 0) || (nb2 > 0 && nb1 < 0 && result < 0))
+				throw std::overflow_error("Overflow: result too large in subtraction");
+		break;
+		case '*' :
+			result = nb2 * nb1;
+			if (nb2 != 0 && result / nb2 != nb1)
+				throw std::overflow_error("Overflow: result too large in multiplication");
+		break;
+		case '/' :
+			if (nb1 == 0)
+				throw std::runtime_error("Error : Division by zero");
+			else
+				result = nb2 / nb1;
+		break;
+		default :
+			throw std::runtime_error("Error : Invalid operator");
+	}
+	if (result > INT_MAX || result < INT_MIN)
+		throw std::overflow_error("Overflow: result exceeds integer limits");
+	return result;
+}
+
+bool ReversePolish::checkInput(std::string str, int who){
+	int nb = -42;
+	if(who == 1){
+		for(int i = 0; str[i]; ++i){
+			if(!isdigit(str[i]))
+				return false ;
 			}
-			default :
-				std::cerr << "Wrong type\n";
-		}
-		return result;
-	}
-
-	bool ReversePolish::checkInput(char c, int who){
-		if(c >= '0' && c <= '9' && who == 1)
+		nb = atoi(str.c_str());
+		if(nb >= 0 && nb <= 9 ){
+			_array.push(nb);
 			return true ;
-		if(strchr("+-*/", c) && who == 0)
-			return true;
-	return false;
-	}
-
-	void ReversePolish::calculator(char *av){
-		std::stringstream ss(av);
-		std::string input;
-		int signNb = 0;
-		int number = 0;
-		char sign;
-
-		while (ss >> input){
-			int i = 0;
-		while(ss >> input){
-			if(checkInput(input[i], 1)){
-				_array.push(input);
-				number++;
-				}
-			if(checkInput(input[i], 0)){
-				signNb++;
-				sign = input[i];
-				break ;}
-			i++;
 		}
-		int nb1 = atoi(input.c_str());
-		_array.pop();
-		int nb2 = atoi(input.c_str());
-		_array.pop();
-		makeCalcul(nb1,nb2,sign);
 	}
+	if (who == 0){
+		if(strchr("/*-+", str[0]) && str.size() == 1)
+			return true;
 	}
+return false;
+}
+
+char ReversePolish::parseStack(std::string str){
+	
+	char sign = 0;			
+		if(checkInput(str,1)){
+			_countNumber++;
+			return sign;
+		}
+		if(checkInput(str, 0)){
+			_countSign++;
+			return sign = str[0];
+		}
+		else
+			throw std::runtime_error("Error: wrong input");
+return sign;
+}
+
+int ReversePolish::calculator(char *av){
+
+	std::stringstream ss(av);
+	std::string input ;
+	int result = 0;
+
+	while (ss >> input){
+	char sign = parseStack(input);
+	if( _array.size() >= 2 && sign){
+		int nb1 = _array.top();
+		_array.pop();
+		int nb2 = _array.top();
+		_array.pop();
+		result = makeCalcul(nb1,nb2,sign);
+		_array.push(result); 
+		// std::cout  << nb2 << " " << sign << " " << nb1 << std::endl;
+		// std::cout <<"result : "<<  result << std::endl <<std::endl;
+		sign = 0;
+		}
+	}
+	if ((_countSign == 1 && _countNumber == 1 ) )
+		throw std::runtime_error("Error: wrong usage");
+	if(_countSign != _countNumber -1 || _array.size() != 1)
+		throw std::runtime_error("Error: wrong number of operators and operands");
+return result;
+}

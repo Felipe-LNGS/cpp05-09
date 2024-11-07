@@ -4,7 +4,7 @@ CC			=   c++
 
 FLAG		=   -std=c++98 -Wall -Wextra -Werror -g3
 
-C_FILES		=   main.cpp
+C_FILES		=   RPN.cpp main.cpp 
 OBJ_DIR		=   obj
 
 OBJS		=   $(addprefix $(OBJ_DIR)/, $(C_FILES:.cpp=.o))
