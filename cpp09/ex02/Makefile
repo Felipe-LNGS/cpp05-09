@@ -1,10 +1,10 @@
-NAME		=   stack
+NAME		=   PmergeMe
 
 CC			=   c++
 
 FLAG		=   -std=c++98 -Wall -Wextra -Werror -g3
 
-C_FILES		=   main.cpp BitcoinExchange.cpp
+C_FILES		=   main.cpp PmergeMe.cpp
 OBJ_DIR		=   obj
 
 OBJS		=   $(addprefix $(OBJ_DIR)/, $(C_FILES:.cpp=.o))

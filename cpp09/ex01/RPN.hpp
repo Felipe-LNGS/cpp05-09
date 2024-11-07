@@ -1,5 +1,4 @@
 #pragma once
-
 #include <algorithm>
 #include <iostream>
 #include <stack>
@@ -8,6 +7,7 @@
 #include <string>
 #include <sstream>
 #include <climits>
+
 class ReversePolish{
 	private :
 		std::stack<int> _array;
